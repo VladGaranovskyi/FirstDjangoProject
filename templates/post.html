@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{{ post.title }}</h1>
+<p>{{ post.content }}</p>
+<h3>{{ post.author.username }}</h3>
+{% if request.user.is_authenticated %}
+<form method="post" action="/comment/{{ post.title }}">
+    {% csrf_token %}
+    <input type="text" name="content" required>
+    <button type="submit" class="btn btn-primary">Send</button>
+</form>
+{% endif %}
+{% if post.comments.all is not none %}
+    {% for comment in post.comments.all %}
+        <h6>{{ comment.author }}: {{ comment.content }}</h6>
+    {% endfor %}
+{% endif %}
+{% endblock %}
